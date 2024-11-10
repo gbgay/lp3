@@ -1,0 +1,32 @@
+class Item:
+    def __init__(self, profit, weight):
+        self.profit = profit
+        self.weight = weight
+
+# Comparator function to sort items based on the profit/weight ratio
+def cmp(item):
+    return item.profit / item.weight
+
+def fractional_knapsack(W, arr, N):
+    arr.sort(key=cmp, reverse=True)
+    final_value = 0.0
+    
+    for item in arr:
+        if item.weight <= W:
+            W -= item.weight
+            final_value += item.profit
+        else:
+            final_value += item.profit * (W / item.weight)
+            break
+    
+    return final_value
+
+W = int(input("Enter the capacity of the knapsack: "))
+N = int(input("Enter the number of items: "))
+
+arr = []
+for i in range(N):
+    profit, weight = map(int, input(f"Enter profit and weight for item {i+1}: ").split())
+    arr.append(Item(profit, weight))
+
+print(f"The maximum value in the knapsack is: {fractional_knapsack(W, arr, N)}")
